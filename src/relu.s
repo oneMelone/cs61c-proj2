@@ -13,26 +13,20 @@
 # this function exits with error code 8.
 # ==============================================================================
 relu:
-    # Prologue
-
-
+	ble a1, x0, illegal_input
+	add t0, x0, x0
 loop_start:
-    
-
-
-
-
-
-
-
+    bge t0, a1, loop_end
+	slli t1, t0, 2
+	add t1, t1, a0
+	lw t2, 0(t1) # t2: a0[i * s]
+	bgt t2, x0, loop_continue
+	sw x0, 0(t1)
 loop_continue:
-
-
-
+	addi t0, t0, 1
+	j loop_start
 loop_end:
-
-
-    # Epilogue
-
-    
 	ret
+illegal_input:
+	addi a1, x0, 8
+	jal ra, exit2

@@ -15,27 +15,29 @@
 # this function exits with error code 7.
 # =================================================================
 argmax:
+	# check input param
+	ble a1, x0, illegal_input
 
-    # Prologue
-
-
+	addi t0, x0, 0 # t0: index
+	lw t1, 0(a0) # t1: current max value
+	addi t2, x0, 1 # t2: i, for-loop counter
 loop_start:
-
-
-
-
-
-
-
+	bge t2, a1, loop_end
+	slli t3, t2, 2 # t3: i * s
+	add t3, t3, a0 # pointer to current array position
+	lw t4, 0(t3) # t4: a0[i * s]
+	ble t4, t1, loop_continue
+	addi t0, t2, 0
+	addi t1, t4, 0
 
 loop_continue:
-
-
+	addi t2, t2, 1
+	j loop_start
 
 loop_end:
-    
-
-    # Epilogue
-
-
+    addi a0, t0, 0
     ret
+
+illegal_input:
+	addi a1, x0, 7
+	jal ra, exit2
